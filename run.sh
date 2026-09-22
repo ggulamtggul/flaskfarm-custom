@@ -30,7 +30,14 @@ while true; do
     cd "${SOURCE_PATH}" || exit 1
     python -m main --repeat ${COUNT} --config "/data/config.yaml"
     RESULT=$?
-    if [ "$RESULT" = "1" ]; then sleep 5; else break; fi
+    echo "PYTHON EXIT CODE : ${RESULT}.............."
+    if [ "$RESULT" = "1" ]; then
+        echo 'REPEAT....'
+        sleep 5
+    else
+        echo 'FINISH....'
+        break
+    fi
     ((COUNT++))
 done
 
