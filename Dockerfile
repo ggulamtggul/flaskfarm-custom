@@ -1,8 +1,9 @@
 FROM flaskfarm/flaskfarm:4.1
 
-# 1. Python 3.11 및 venv 설치
+# 1. FFmpeg (Ubuntu 22.04 공식 패키지 v4.4.2), VAAPI 하드웨어 가속 드라이버, Python 3.11 설치
 RUN apt-get update && \
-    apt-get install -y software-properties-common git && \
+    apt-get install -y software-properties-common git \
+                       ffmpeg vainfo intel-media-va-driver mesa-va-drivers && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
     apt-get update && \
     apt-get install -y python3.11 python3.11-venv && \
