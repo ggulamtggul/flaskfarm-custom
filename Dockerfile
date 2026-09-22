@@ -16,7 +16,7 @@ RUN pip install plexapi google-api-python-client
 # 3. gd-poller 전용 Python 3.11 가상환경 및 패키지 설치
 # (upstream pyproject.toml 내 gd_poller.helpers 패키징 누락 버그 패치 및 검증)
 RUN git clone --depth 1 https://github.com/halfaider/gd-poller.git /opt/gd-poller && \
-    sed -i 's/"gd_poller"/"gd_poller", "gd_poller.helpers"/g' /opt/gd-poller/pyproject.toml && \
+    python3 -c "p = '/opt/gd-poller/pyproject.toml'; s = open(p).read().replace('packages = [\n    \"gd_poller\"\n]', 'packages = [\"gd_poller\", \"gd_poller.helpers\"]'); open(p, 'w').write(s)" && \
     python3.11 -m venv /opt/gd-poller-venv && \
     /opt/gd-poller-venv/bin/pip install --upgrade pip setuptools wheel && \
     /opt/gd-poller-venv/bin/pip install -e /opt/gd-poller google-api-python-client && \
