@@ -23,6 +23,9 @@ RUN git clone --depth 1 https://github.com/halfaider/gd-poller.git /opt/gd-polle
     ln -s /opt/gd-poller-venv/bin/gd-poller /usr/local/bin/gd-poller && \
     /opt/gd-poller-venv/bin/python -c "from gd_poller.cli import main; print('gd-poller verified successfully!')"
 
-# 4. 수정된 run.sh를 컨테이너 내부에 직접 포함
+# 4. Celery 워커 및 전역 Python 환경변수
+ENV PYTHONPATH=/data/src/flaskfarm/lib:/data/src/flaskfarm
+
+# 5. 수정된 run.sh를 컨테이너 내부에 직접 포함
 COPY run.sh /root/run.sh
 RUN chmod +x /root/run.sh

@@ -27,6 +27,17 @@ while true; do
         sed -i 's/self\.logger\.debug(mode)/self.logger.info(mode)/g' "${SOURCE_PATH}/lib/system/page_command.py"
     fi
 
+    # flaskfarm 패키지 최신 소스 심볼릭 링크 유지 (Celery 워커 최신 소스 참조)
+    if [ ! -L "/usr/local/lib/python3.10/dist-packages/flaskfarm" ]; then
+        rm -rf /usr/local/lib/python3.10/dist-packages/flaskfarm
+        ln -sfn "${SOURCE_PATH}" /usr/local/lib/python3.10/dist-packages/flaskfarm
+    fi
+
+    # SQLAlchemy model_setting 중복 정의(extend_existing) 패치
+    if [[ -f "${SOURCE_PATH}/lib/plugin/model_setting.py" ]]; then
+        sed -i "s/'mysql_collate': 'utf8_general_ci'/'mysql_collate': 'utf8_general_ci', 'extend_existing': True/g" "${SOURCE_PATH}/lib/plugin/model_setting.py"
+    fi
+
     cd "${SOURCE_PATH}" || exit 1
     python -m main --repeat ${COUNT} --config "/data/config.yaml"
     RESULT=$?
